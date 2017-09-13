@@ -34,7 +34,7 @@
                                  <content>
                                     <VBox>
                                        <children>
-                                          <TextArea fx:id="request" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" wrapText="true" />
+                                          <TextArea fx:id="content" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" wrapText="true" />
                                           <TableView fx:id="headers" editable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="287.0" tableMenuButtonVisible="true">
                                             <columns>
                                               <TableColumn fx:id="key" maxWidth="1.7976931348623157E308" prefWidth="111.0" text="Key" />
