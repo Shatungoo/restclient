@@ -1,10 +1,5 @@
 package com.helldaisy.restclient;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.Arrays;
-import java.util.Map;
-import java.util.ResourceBundle;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -12,10 +7,18 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.util.StringConverter;
-import org.apache.http.client.methods.*;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.util.EntityUtils;
 
+import java.io.IOException;
+import java.net.URL;
 import java.util.AbstractMap.SimpleEntry;
+import java.util.Arrays;
+import java.util.Map;
+import java.util.ResourceBundle;
 public class SceneController implements Initializable {
 
     public BaseRequest request;
@@ -49,6 +52,16 @@ public class SceneController implements Initializable {
             e.printStackTrace();
             responce.setText(e.toString());
         }
+    }
+
+    @FXML
+    private void addHeader(ActionEvent event) {
+        headers.getItems().add(new SimpleEntry<String, String>("", ""));
+    }
+
+    @FXML
+    private void deleteHeader(ActionEvent event) {
+        Object item = headers.getSelectionModel().getSelectedItem();
     }
 
     public void setResp(CloseableHttpResponse response) throws IOException{
@@ -104,6 +117,7 @@ public class SceneController implements Initializable {
                 }
             };
         });
+
         address.getItems().add("http://vm-postgre.todes.by:8080/restws/auth/login");
 
         method.getSelectionModel().selectFirst();
@@ -113,5 +127,7 @@ public class SceneController implements Initializable {
         keyResp.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getKey()));
         valueResp.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getValue()));
         headers.getItems().add(new SimpleEntry("Content-type", "application/json")) ;
-    }    
+    }
+
+
 }
