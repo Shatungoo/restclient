@@ -8,10 +8,21 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
-public class BaseRequest {
+public class BaseRequest implements Serializable{
     HashMap<String,String> headers,params;
+
+    public String getBaseUrl() {
+        return baseUrl;
+    }
+
+    public BaseRequest setBaseUrl(String baseUrl) {
+        this.baseUrl = baseUrl;
+        return this;
+    }
+
     String baseUrl;
     HttpRequestBase reqtype;
     String ent;

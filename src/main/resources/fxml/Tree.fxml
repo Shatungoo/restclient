@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.StackPane?>
+
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+           prefHeight="480.0"
+           prefWidth="640.0"
+           xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="com.helldaisy.restclient.TreeController">
+   <children>
+      <ListView fx:id="List" prefHeight="388.0" prefWidth="424.0" />
+   </children>
+</StackPane>
