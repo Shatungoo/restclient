@@ -30,7 +30,8 @@ public class BaseRequest {
         params.entrySet().stream().forEach((p)->
                 uriBuilder.addParameter(p.getKey(),p.getValue())
         );
-        if (reqtype instanceof HttpEntityEnclosingRequestBase){
+        if (reqtype instanceof HttpEntityEnclosingRequestBase
+                &&ent!=null){
             StringEntity entity=new StringEntity(ent);
             ((HttpEntityEnclosingRequestBase) reqtype).setEntity(entity);
         }

@@ -6,6 +6,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.util.Pair;
 import javafx.util.StringConverter;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -15,9 +17,7 @@ import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.AbstractMap.SimpleEntry;
 import java.util.Arrays;
-import java.util.Map;
 import java.util.ResourceBundle;
 public class SceneController implements Initializable {
 
@@ -36,10 +36,10 @@ public class SceneController implements Initializable {
     private ChoiceBox<HttpRequestBase> method;
 
     @FXML
-    private TableView<Map.Entry<String,String>> headers,params,respParams;
+    private TableView<KeyValue<String,String>> headers,params,respParams;
 
     @FXML
-    private TableColumn<Map.Entry<String,String>, String> key,value,keyResp,valueResp;
+    private TableColumn<KeyValue<String,String>, String> key,value,keyResp,valueResp,key1,value1;
 
     
     @FXML
@@ -56,21 +56,21 @@ public class SceneController implements Initializable {
 
     @FXML
     private void addHeader(ActionEvent event) {
-        headers.getItems().add(new SimpleEntry<String, String>("", ""));
+        headers.getItems().add(new KeyValue<String, String>("  ", ""));
     }
 
     @FXML
     private void deleteHeader(ActionEvent event) {
-        Object item = headers.getSelectionModel().getSelectedItem();
+        headers.getItems().remove(headers.getSelectionModel().getSelectedItem());
     }
 
     public void setResp(CloseableHttpResponse response) throws IOException{
         responce.setText(EntityUtils.toString(response.getEntity()));
         respParams.getItems().clear();
-        respParams.getItems().add(new SimpleEntry<>("status",String.valueOf(response.getStatusLine().getStatusCode())
+        respParams.getItems().add(new KeyValue<>("status",String.valueOf(response.getStatusLine().getStatusCode())
         ));
         Arrays.stream(response.getAllHeaders()).forEach((p)->
-                respParams.getItems().add(new SimpleEntry(p.getName(), p.getValue()))
+                respParams.getItems().add(new KeyValue(p.getName(), p.getValue()))
         );
     }
     
@@ -123,10 +123,39 @@ public class SceneController implements Initializable {
         method.getSelectionModel().selectFirst();
         key.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getKey()));
         value.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getValue()));
-
+        key.setCellFactory(TextFieldTableCell.<KeyValue<String,String>>forTableColumn());
+        value.setCellFactory(TextFieldTableCell.<KeyValue<String,String>>forTableColumn());
+        value.setOnEditCommit( t ->
+           t.getTableView()
+               .getItems()
+               .get(t.getTablePosition()
+                   .getRow())
+                   .setValue(t.getNewValue())
+        );
+        key.setOnEditCommit( t ->
+                t.getTableView()
+                        .getItems()
+                        .get(t.getTablePosition()
+                                .getRow())
+                        .setKey(t.getNewValue())
+        );
+        value1.setOnEditCommit( t ->
+                t.getTableView()
+                        .getItems()
+                        .get(t.getTablePosition()
+                                .getRow())
+                        .setValue(t.getNewValue())
+        );
+        key1.setOnEditCommit( t ->
+                t.getTableView()
+                        .getItems()
+                        .get(t.getTablePosition()
+                                .getRow())
+                        .setKey(t.getNewValue())
+        );
         keyResp.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getKey()));
         valueResp.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getValue()));
-        headers.getItems().add(new SimpleEntry("Content-type", "application/json")) ;
+        headers.getItems().add(new KeyValue("Content-type", "application/json")) ;
     }
 
 
